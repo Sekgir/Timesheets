@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Timesheets.Requests
 {
-    public class ContractAddOpeningHoursRequest
+    public class WorkingHoursAddOpeningHours
     {
         public int IdContract { get; set; }
         public int IdEmpl { get; set; }

@@ -4,8 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Timesheets.Models;
-using Timesheets.Requests;
+using Timesheets.DAL.Models;
 
 namespace Timesheets.Controllers
 {
@@ -46,31 +45,6 @@ namespace Timesheets.Controllers
         {
             Contract contract = _data.Contracts.Find(item => item.Id == id);
             return Ok(contract);
-        }
-
-        [HttpPost("addOpeningHours")]
-        public ActionResult AddOpeningHours([FromBody] ContractAddOpeningHoursRequest request)
-        {
-            Contract contract = _data.Contracts.Find(item => item.Id == request.IdContract);
-            if (contract == null)
-            {
-                return NotFound();
-            }
-            if (contract.WorkingHours == null)
-            {
-                contract.WorkingHours = new List<WorkingHours>() { new WorkingHours() { IdEmpl = request.IdEmpl, Time = TimeSpan.FromSeconds(request.Time) } };
-                return Ok();
-            }
-            WorkingHours workingHours = contract.WorkingHours.Find(item => item.IdEmpl == request.IdEmpl);
-            if (workingHours == null)
-            {
-                contract.WorkingHours.Add(new WorkingHours() { IdEmpl = request.IdEmpl, Time = TimeSpan.FromSeconds(request.Time) });
-            }
-            else
-            {
-                workingHours.Time = workingHours.Time.Add(TimeSpan.FromSeconds(request.Time));
-            }
-            return Ok();
         }
 
         [HttpPost("delete")]
