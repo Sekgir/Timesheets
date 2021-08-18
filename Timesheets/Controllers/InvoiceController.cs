@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Timesheets.Models;
+using Timesheets.DAL.Models;
 
 namespace Timesheets.Controllers
 {
@@ -35,20 +35,17 @@ namespace Timesheets.Controllers
             {
                 invoice.Id = _data.Invoices.Max(item => item.Id) + 1;
             }
-            Contract contract = _data.Contracts.Find(item => item.Id == invoice.IdContract);
-            if (contract == null)
+            List<WorkingHours> workingHoursList = _data.WorkingHours.FindAll(item => item.Id == invoice.IdContract && !item.IsInvoiceExposed);
+            if (workingHoursList == null || workingHoursList.Count == 0)
             {
                 return NotFound();
             }
             invoice.Price = 0;
-            if (contract.WorkingHours != null && contract.WorkingHours.Count > 0)
+            foreach (var workingHours in workingHoursList)
             {
-                foreach (var workingHours in contract.WorkingHours)
-                {
-                    Employee employee = _data.Employees.Find(item => item.Id == workingHours.IdEmpl);
-                    invoice.Price += workingHours.Time.TotalHours * employee.Salary;
-                }
-                contract.WorkingHours = null;
+                Employee employee = _data.Employees.Find(item => item.Id == workingHours.IdEmpl);
+                invoice.Price += workingHours.Time.TotalHours * employee.Salary;
+                workingHours.IsInvoiceExposed = true;
             }
             _data.Invoices.Add(invoice);
             return Ok(invoice);

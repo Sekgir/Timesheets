@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Timesheets.DAL.Interfaces;
+using Timesheets.DAL.Repositories;
 
 namespace Timesheets
 {
@@ -29,6 +31,7 @@ namespace Timesheets
             services.AddControllers();
             ConfigureSwagger(services);
             services.AddSingleton<Data>();
+            services.AddSingleton<IPersonsRepository, PersonsTemproryRepository>();
         }
 
         public void ConfigureSwagger(IServiceCollection services)
