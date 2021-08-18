@@ -8,8 +8,7 @@ namespace Timesheets.DAL.Models
     public class Invoice
     {
         public int Id { get; set; }
-        public int IdClient { get; set; }
         public int IdContract { get; set; }
-        public double Price { get; set; }
+        public double Amount { get; set; }
     }
 }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Timesheets.DAL.Models
 {
-    public class Employee : BaseEntity
+    public class Customer : BaseEntity
     {
         public long IdPerson { get; set; }
-        public double Rate { get; set; }
+
     }
 }
