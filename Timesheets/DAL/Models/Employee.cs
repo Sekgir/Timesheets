@@ -9,5 +9,8 @@ namespace Timesheets.DAL.Models
     {
         public long IdPerson { get; set; }
         public double Rate { get; set; }
+
+        public Person Person { get; set; }
+        public ICollection<TaskEmployee> TaskEmployees { get; set; }
     }
 }

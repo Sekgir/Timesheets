@@ -1,70 +1,70 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Timesheets.DAL.Models;
+﻿//using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Mvc;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Threading.Tasks;
+//using Timesheets.DAL.Models;
 
-namespace Timesheets.Controllers
-{
-    [ApiController]
-    [Route("api/[controller]")]
-    public class ClientController : ControllerBase
-    {
-        Data _data;
-        public ClientController(Data data)
-        {
-            _data = data;
-        }
+//namespace Timesheets.Controllers
+//{
+//    [ApiController]
+//    [Route("api/[controller]")]
+//    public class CustomerController : ControllerBase
+//    {
+//        Data _data;
+//        public CustomerController(Data data)
+//        {
+//            _data = data;
+//        }
 
-        [HttpGet]
-        public ActionResult GetAll()
-        {
-            return Ok(_data.Clients);
-        }
+//        [HttpGet]
+//        public ActionResult GetAll()
+//        {
+//            return Ok(_data.Customers);
+//        }
 
-        [HttpPost("create")]
-        public ActionResult Create([FromBody] Client client)
-        {
-            if (_data.Clients.Count == 0)
-            {
-                client.Id = 0;
-            }
-            else
-            {
-                client.Id = _data.Clients.Max(item => item.Id) + 1;
-            }
-            _data.Clients.Add(client);
-            return Ok();
-        }
+//        [HttpPost("create")]
+//        public ActionResult Create([FromBody] Customer customer)
+//        {
+//            if (_data.Customers.Count == 0)
+//            {
+//                customer.Id = 0;
+//            }
+//            else
+//            {
+//                customer.Id = _data.Customers.Max(item => item.Id) + 1;
+//            }
+//            _data.Customers.Add(customer);
+//            return Ok();
+//        }
 
-        [HttpGet("{id}")]
-        public ActionResult Read([FromRoute] int id)
-        {
-            Client client = _data.Clients.Find(item => item.Id == id);
-            return Ok(client);
-        }
+//        [HttpGet("{id}")]
+//        public ActionResult Read([FromRoute] int id)
+//        {
+//            Customer customer = _data.Customers.Find(item => item.Id == id);
+//            return Ok(customer);
+//        }
 
-        [HttpPost("update")]
-        public ActionResult Update([FromBody] Client client)
-        {
-            Client client1 = _data.Clients.Find(item => item.Id == client.Id);
-            if (client1 != null)
-            {
-                client1.Lastname = client.Lastname;
-                client1.Name = client.Name;
-                client1.Patronymic = client.Patronymic;
-            }
-            return Ok();
-        }
+//        [HttpPost("update")]
+//        public ActionResult Update([FromBody] Customer customer)
+//        {
+//            Customer customer1 = _data.Customers.Find(item => item.Id == customer.Id);
+//            if (customer1 != null)
+//            {
+//                customer1.Lastname = customer.Lastname;
+//                customer1.Name = customer.Name;
+//                customer1.Patronymic = customer.Patronymic;
+//            }
+//            return Ok();
+//        }
 
-        [HttpPost("delete")]
-        public ActionResult Delete([FromForm] int id)
-        {
-            Client client = _data.Clients.Find(item => item.Id == id);
-            _data.Clients.Remove(client);
-            return Ok();
-        }
-    }
-}
+//        [HttpPost("delete")]
+//        public ActionResult Delete([FromForm] int id)
+//        {
+//            Customer customer = _data.Customers.Find(item => item.Id == id);
+//            _data.Customers.Remove(customer);
+//            return Ok();
+//        }
+//    }
+//}

@@ -7,7 +7,7 @@ using Timesheets.DAL.Models;
 
 namespace Timesheets.DAL.Repositories
 {
-    public class PersonsTemproryRepository : IPersonsRepository
+    public class PersonsTemproryRepository //: IPersonsRepository
     {
         Data _data;
         public PersonsTemproryRepository(Data data)
@@ -23,7 +23,7 @@ namespace Timesheets.DAL.Repositories
         {
             return _data.Persons.Find(item => $"{item.LastName} {item.FirstName}".Contains(name, StringComparison.OrdinalIgnoreCase));
         }
-        public IList<Person> GetPersonsList(int skip, int take)
+        public ICollection<Person> GetPersonsList(int skip, int take)
         {
             return _data.Persons.Skip(skip).Take(take).ToList();
         }

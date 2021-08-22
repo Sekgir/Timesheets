@@ -6,9 +6,8 @@ using Timesheets.DAL.Models;
 
 namespace Timesheets.DAL.Interfaces
 {
-    public interface IPersonsRepository : IRepository<Person>
+    public interface IInvoicesRepository : IRepository<Invoice>
     {
-        Person GetByName(string name);
-        ICollection<Person> GetList(int skip, int take);
+        
     }
 }

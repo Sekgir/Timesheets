@@ -12,5 +12,8 @@ namespace Timesheets.DAL.Models
         public string Email { get; set; }
         public string Company { get; set; }
         public int Age { get; set; }
+
+        public Employee Employee { get; set; }
+        public Customer Customer { get; set; }
     }
 }

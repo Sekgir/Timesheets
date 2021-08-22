@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Timesheets.DAL.Models
 {
@@ -10,5 +7,8 @@ namespace Timesheets.DAL.Models
         public long IdTask { get; set; }
         public long IdEmployee { get; set; }
         public TimeSpan Time { get; set; }
+
+        public Task Task { get; set; }
+        public Employee Employee { get; set; }
     }
 }

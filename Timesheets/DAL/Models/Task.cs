@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Timesheets.DAL.Models
 {
@@ -11,5 +9,9 @@ namespace Timesheets.DAL.Models
         public string Name { get; set; }
         public double Amount { get; set; }
         public bool FixedAmount { get; set; }
+
+        public Contract Contract { get; set; }
+        public ICollection<InvoiceTask> InvoiceTasks { get; set; }
+        public ICollection<TaskEmployee> TaskEmployees { get; set; }
     }
 }

@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 
 namespace Timesheets.DAL.Models
 {
-    public class Invoice
+    public class Invoice : BaseEntity
     {
-        public int Id { get; set; }
-        public int IdContract { get; set; }
+        public long IdContract { get; set; }
         public double Amount { get; set; }
+
+        public Contract Contract { get; set; }
+        public ICollection<InvoiceTask> InvoiceTasks { get; set; }
     }
 }

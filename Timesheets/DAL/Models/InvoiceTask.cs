@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Timesheets.DAL.Models
 {
@@ -9,5 +6,8 @@ namespace Timesheets.DAL.Models
     {
         public long IdInvoice { get; set; }
         public long IdTask { get; set; }
+
+        public Invoice Invoice { get; set; }
+        public Task Task { get; set; }
     }
 }

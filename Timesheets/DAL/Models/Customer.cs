@@ -9,5 +9,7 @@ namespace Timesheets.DAL.Models
     {
         public long IdPerson { get; set; }
 
+        public Person Person { get; set; }
+        public ICollection<Contract> Contracts { get; set; } 
     }
 }
