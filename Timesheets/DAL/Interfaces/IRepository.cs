@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Timesheets.DAL.Interfaces
 {
-    public interface IRepository<T>
+    public interface IRepository<T> where T : class
     {
         T GetById(long id);
         bool Create(T person);

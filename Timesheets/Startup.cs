@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Timesheets.DAL;
 using Timesheets.DAL.Interfaces;
 using Timesheets.DAL.Repositories;
+using Timesheets.DAL.Services;
 
 namespace Timesheets
 {
@@ -27,6 +28,9 @@ namespace Timesheets
         public void AddSqlRepositories(IServiceCollection services)
         {
             services.AddSingleton<TimesheetsContext>();
+            services.AddSingleton<IPersonsRepository, PersonsRepository>();
+            services.AddSingleton<ICustomersRepository, CustomersRepository>();
+            services.AddSingleton<CustomerService>();
         }
 
 
@@ -39,7 +43,6 @@ namespace Timesheets
             ConfigureSwagger(services);
             services.AddSingleton<Data>();
             AddSqlRepositories(services);
-            services.AddSingleton<IPersonsRepository, PersonsRepository>();
         }
 
         public void ConfigureSwagger(IServiceCollection services)

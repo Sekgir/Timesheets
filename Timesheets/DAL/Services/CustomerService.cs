@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Timesheets.DAL.Models;
 using Timesheets.DAL.Interfaces;
 
-namespace Timesheets.DAL.Service
+namespace Timesheets.DAL.Services
 {
     public class CustomerService
     {
@@ -23,10 +23,18 @@ namespace Timesheets.DAL.Service
             return _repository.GetById(id);
         }
 
-        public ICollection<Contract> GetContractsByCustomer(long id)
+        public IList<Contract> GetContractsByCustomer(long id)
         {
             var customer = _repository.GetById(id);
-            return customer.Contracts;
+            _context.Entry(customer).Collection(c => c.Contracts).Load();
+            return customer.Contracts.ToList();
         }
+
+        //public ICollection<Contract> GetsByCustomer(long id)
+        //{
+        //    var customer = _repository.GetById(id);
+        //    _context.Entry(customer).Reference(c => c.Contracts).Load();
+        //    return customer.Contracts;
+        //}
     }
 }
