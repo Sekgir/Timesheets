@@ -5,9 +5,13 @@ using System.Threading.Tasks;
 
 namespace Timesheets.DAL.Models
 {
-    public class Contract
+    public class Contract : BaseEntity
     {
-        public int Id { get; set; }
+        public long IdCustomer { get; set; }
         public int Number { get; set; }
+
+        public Customer Customer { get; set; }
+        public ICollection<Invoice> Invoices { get; set; }
+        public ICollection<Task> Tasks { get; set; }
     }
 }

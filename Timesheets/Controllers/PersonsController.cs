@@ -22,21 +22,21 @@ namespace Timesheets.Controllers
         [HttpGet("{id}")]
         public ActionResult GetPersonById([FromRoute] int id)
         {
-            var request = _repository.GetPersonById(id);
+            var request = _repository.GetById(id);
             return Ok(request);
         }
 
-        [HttpGet("search?searchTerm={term}")]
-        public ActionResult GetPersonByName([FromRoute] string term)
+        [HttpGet("search")]
+        public ActionResult GetPersonByName([FromQuery] string searchTerm)
         {
-            var request = _repository.GetPersonByName(term);
+            var request = _repository.GetByName(searchTerm);
             return Ok(request);
         }
 
         [HttpGet("skip={skip}&take={take}")]
         public ActionResult GetPersonsList([FromRoute] int skip, [FromRoute] int take)
         {
-            var request = _repository.GetPersonsList(skip, take);
+            var request = _repository.GetList(skip, take);
             return Ok(request);
         }
 

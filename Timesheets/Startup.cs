@@ -11,8 +11,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Timesheets.DAL;
 using Timesheets.DAL.Interfaces;
 using Timesheets.DAL.Repositories;
+using Timesheets.DAL.Services;
 
 namespace Timesheets
 {
@@ -23,6 +25,15 @@ namespace Timesheets
             Configuration = configuration;
         }
 
+        public void AddSqlRepositories(IServiceCollection services)
+        {
+            services.AddSingleton<TimesheetsContext>();
+            services.AddSingleton<IPersonsRepository, PersonsRepository>();
+            services.AddSingleton<ICustomersRepository, CustomersRepository>();
+            services.AddSingleton<CustomerService>();
+        }
+
+
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -31,7 +42,7 @@ namespace Timesheets
             services.AddControllers();
             ConfigureSwagger(services);
             services.AddSingleton<Data>();
-            services.AddSingleton<IPersonsRepository, PersonsTemproryRepository>();
+            AddSqlRepositories(services);
         }
 
         public void ConfigureSwagger(IServiceCollection services)
