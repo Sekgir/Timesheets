@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Timesheets.DAL.Interfaces;
 using Timesheets.DAL.Models;
+using Timesheets.DAL.Services;
 
 namespace Timesheets.Controllers
 {
@@ -12,46 +14,31 @@ namespace Timesheets.Controllers
     [Route("api/[controller]")]
     public class ContractController : ControllerBase
     {
-        Data _data;
-        public ContractController(Data data)
+        ContractsService _service;
+        public ContractController(ContractsService service)
         {
-            _data = data;
+            _service = service;
         }
 
-        [HttpGet]
-        public ActionResult GetAll()
-        {
-            return Ok(_data.Contracts);
-        }
-
-        [HttpPost("create")]
-        public ActionResult Create([FromForm] int number)
-        {
-            Contract contract = new Contract() { Number = number };
-            if (_data.Contracts.Count == 0)
-            {
-                contract.Id = 0;
-            }
-            else
-            {
-                contract.Id = _data.Contracts.Max(item => item.Id) + 1;
-            }
-            _data.Contracts.Add(contract);
-            return Ok();
-        }
 
         [HttpGet("{id}")]
-        public ActionResult Read([FromRoute] int id)
+        public async Task<ActionResult> GetById([FromRoute] int id)
         {
-            Contract contract = _data.Contracts.Find(item => item.Id == id);
-            return Ok(contract);
+            var result = await _service.GetContractById(id);
+            return Ok(result);
         }
 
-        [HttpPost("delete")]
-        public ActionResult Delete([FromForm] int id)
+        [HttpGet("{id}/invoice")]
+        public async Task<ActionResult> GetInvoices([FromRoute] int id)
         {
-            Contract contract = _data.Contracts.Find(item => item.Id == id);
-            _data.Contracts.Remove(contract);
+            var result = await _service.GetInvoices(id);
+            return Ok(result);
+        }
+
+        [HttpPost("{id}/invoice")]
+        public async Task<ActionResult> CreateInvoice([FromRoute] int id)
+        {
+            await _service.CreateInvoice(id);
             return Ok();
         }
     }

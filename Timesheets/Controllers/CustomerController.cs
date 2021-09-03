@@ -14,72 +14,44 @@ namespace Timesheets.Controllers
     [Route("api/[controller]")]
     public class CustomerController : ControllerBase
     {
-        CustomerService _service;
-        public CustomerController(CustomerService service)
+        CustomersService _service;
+
+        public CustomerController(CustomersService service)
         {
             _service = service;
         }
 
-        //[HttpGet]
-        //public ActionResult GetAll()
-        //{
-        //    return Ok(_data.Customers);
-        //}
         [HttpGet("{id}")]
-        public ActionResult GetById([FromRoute] long id)
+        public async Task<ActionResult> GetById([FromRoute] long id)
         {
-            Customer result = _service.GetCustomerById(id);
+            Customer result = await _service.GetCustomerById(id);
             return Ok(result);
         }
 
         [HttpGet("{id}/contracts")]
-        public ActionResult GetContractsByIdCustomer([FromRoute] long id)
+        public async Task<ActionResult> GetContractsByCustomerId([FromRoute] long id)
         {
-            IList<Contract> result = _service.GetContractsByCustomer(id);
+            ICollection<Contract> result = await _service.GetContractsByCustomerId(id);
             return Ok(result);
         }
 
-        //[HttpPost("create")]
-        //public ActionResult Create([FromBody] Customer customer)
-        //{
-        //    if (_data.Customers.Count == 0)
-        //    {
-        //        customer.Id = 0;
-        //    }
-        //    else
-        //    {
-        //        customer.Id = _data.Customers.Max(item => item.Id) + 1;
-        //    }
-        //    _data.Customers.Add(customer);
-        //    return Ok();
-        //}
-
-        //[HttpGet("{id}")]
-        //public ActionResult Read([FromRoute] int id)
-        //{
-        //    Customer customer = _data.Customers.Find(item => item.Id == id);
-        //    return Ok(customer);
-        //}
-
-        //[HttpPost("update")]
-        //public ActionResult Update([FromBody] Customer customer)
-        //{
-        //    Customer customer1 = _data.Customers.Find(item => item.Id == customer.Id);
-        //    if (customer1 != null)
-        //    {
-        //        customer1.Lastname = customer.Lastname;
-        //        customer1.Name = customer.Name;
-        //        customer1.Patronymic = customer.Patronymic;
-        //    }
-        //    return Ok();
-        //}
-
-        //[HttpPost("delete")]
-        //public ActionResult Delete([FromForm] int id)
-        //{
-        //    Customer customer = _data.Customers.Find(item => item.Id == id);
-        //    _data.Customers.Remove(customer);
-        //    return Ok();
-        //}
+        [HttpPost("{id}/contract")]
+        public async Task<ActionResult> CreateContract([FromRoute] long id, [FromForm] int number)
+        {
+            await _service.CreateContract(id, number);
+            return Ok();
+        }
+        [HttpGet("{id}/invoice")]
+        public async Task<ActionResult> GetInvoicesByCustomerId([FromRoute] long id)
+        {
+            await _service.GetInvoicesByCustomerId(id);
+            return Ok();
+        }
+        [HttpPost]
+        public async Task<ActionResult> CreateCustomer([FromBody] Person person)
+        {
+            await _service.CreateCustomer(person);
+            return Ok();
+        }
     }
 }

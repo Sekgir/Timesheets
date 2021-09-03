@@ -115,9 +115,33 @@ namespace Timesheets.Migrations
 
                     b.HasIndex("IdInvoice");
 
-                    b.HasIndex("IdTask");
+                    b.HasIndex("IdTask")
+                        .IsUnique();
 
                     b.ToTable("InvoiceTask");
+                });
+
+            modelBuilder.Entity("Timesheets.DAL.Models.InvoiceTaskEmpl", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<long>("IdInvoice")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("IdTaskEmployee")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdInvoice");
+
+                    b.HasIndex("IdTaskEmployee")
+                        .IsUnique();
+
+                    b.ToTable("InvoiceTaskEmpl");
                 });
 
             modelBuilder.Entity("Timesheets.DAL.Models.Person", b =>
@@ -251,14 +275,33 @@ namespace Timesheets.Migrations
                         .IsRequired();
 
                     b.HasOne("Timesheets.DAL.Models.Task", "Task")
-                        .WithMany("InvoiceTasks")
-                        .HasForeignKey("IdTask")
+                        .WithOne("InvoiceTask")
+                        .HasForeignKey("Timesheets.DAL.Models.InvoiceTask", "IdTask")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Invoice");
 
                     b.Navigation("Task");
+                });
+
+            modelBuilder.Entity("Timesheets.DAL.Models.InvoiceTaskEmpl", b =>
+                {
+                    b.HasOne("Timesheets.DAL.Models.Invoice", "Invoice")
+                        .WithMany("InvoiceTaskEmpls")
+                        .HasForeignKey("IdInvoice")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Timesheets.DAL.Models.TaskEmployee", "TaskEmployee")
+                        .WithOne("InvoiceTaskEmpl")
+                        .HasForeignKey("Timesheets.DAL.Models.InvoiceTaskEmpl", "IdTaskEmployee")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("TaskEmployee");
                 });
 
             modelBuilder.Entity("Timesheets.DAL.Models.Task", b =>
@@ -310,6 +353,8 @@ namespace Timesheets.Migrations
 
             modelBuilder.Entity("Timesheets.DAL.Models.Invoice", b =>
                 {
+                    b.Navigation("InvoiceTaskEmpls");
+
                     b.Navigation("InvoiceTasks");
                 });
 
@@ -322,9 +367,14 @@ namespace Timesheets.Migrations
 
             modelBuilder.Entity("Timesheets.DAL.Models.Task", b =>
                 {
-                    b.Navigation("InvoiceTasks");
+                    b.Navigation("InvoiceTask");
 
                     b.Navigation("TaskEmployees");
+                });
+
+            modelBuilder.Entity("Timesheets.DAL.Models.TaskEmployee", b =>
+                {
+                    b.Navigation("InvoiceTaskEmpl");
                 });
 #pragma warning restore 612, 618
         }

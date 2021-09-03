@@ -11,6 +11,7 @@ namespace Timesheets.DAL.Models
         public double Amount { get; set; }
 
         public Contract Contract { get; set; }
+        public ICollection<InvoiceTaskEmpl> InvoiceTaskEmpls { get; set; }
         public ICollection<InvoiceTask> InvoiceTasks { get; set; }
     }
 }

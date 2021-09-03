@@ -3,13 +3,12 @@ using System.Collections.Generic;
 
 namespace Timesheets.DAL.Models
 {
-    public class InvoiceTask : BaseEntity
+    public class InvoiceTaskEmpl : BaseEntity
     {
         public long IdInvoice { get; set; }
-        public long IdTask { get; set; }
+        public long IdTaskEmployee { get; set; }
 
         public Invoice Invoice { get; set; }
-        public Task Task { get; set; }
-
+        public TaskEmployee TaskEmployee { get; set; }
     }
 }

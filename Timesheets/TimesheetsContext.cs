@@ -15,6 +15,7 @@ namespace Timesheets
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Task> Tasks { get; set; }
         public DbSet<InvoiceTask> InvoiceTask { get; set; }
+        public DbSet<InvoiceTaskEmpl> InvoiceTaskEmpl { get; set; }
         public DbSet<TaskEmployee> TaskEmployee { get; set; }
 
 
@@ -25,42 +26,99 @@ namespace Timesheets
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Contract>()
-                .HasOne(c => c.Customer)
-                .WithMany(c => c.Contracts)
-                .HasForeignKey(c => c.IdCustomer);
             modelBuilder.Entity<Customer>()
                 .HasOne(p => p.Person)
                 .WithOne(c => c.Customer)
                 .HasForeignKey<Customer>(c => c.IdPerson);
+
             modelBuilder.Entity<Employee>()
-                .HasOne(p => p.Person)
-                .WithOne(e => e.Employee)
+                .HasOne(e => e.Person)
+                .WithOne(p => p.Employee)
                 .HasForeignKey<Employee>(e => e.IdPerson);
+
+            modelBuilder.Entity<Contract>()
+                .HasOne(c => c.Customer)
+                .WithMany(c => c.Contracts)
+                .HasForeignKey(c => c.IdCustomer);
+
             modelBuilder.Entity<Invoice>()
-                .HasOne(c => c.Contract)
-                .WithMany(i => i.Invoices)
-                .HasForeignKey(c => c.IdContract);
-            modelBuilder.Entity<InvoiceTask>()
-                .HasOne(i => i.Invoice)
-                .WithMany(i => i.InvoiceTasks)
-                .HasForeignKey(i => i.IdInvoice);
-            modelBuilder.Entity<InvoiceTask>()
-                .HasOne(t => t.Task)
-                .WithMany(i => i.InvoiceTasks)
-                .HasForeignKey(t => t.IdTask);
+                .HasOne(i => i.Contract)
+                .WithMany(c => c.Invoices)
+                .HasForeignKey(i => i.IdContract);
+
             modelBuilder.Entity<Task>()
                 .HasOne(t => t.Contract)
                 .WithMany(c => c.Tasks)
                 .HasForeignKey(t => t.IdContract);
+
+            modelBuilder.Entity<InvoiceTask>()
+                .HasOne(i => i.Invoice)
+                .WithMany(i => i.InvoiceTasks)
+                .HasForeignKey(i => i.IdInvoice);
+
+            modelBuilder.Entity<InvoiceTask>()
+                .HasOne(i => i.Task)
+                .WithOne(t => t.InvoiceTask)
+                .HasForeignKey<InvoiceTask>(i => i.IdTask);
+
             modelBuilder.Entity<TaskEmployee>()
                 .HasOne(t => t.Employee)
                 .WithMany(e => e.TaskEmployees)
                 .HasForeignKey(t => t.IdEmployee);
+
             modelBuilder.Entity<TaskEmployee>()
                 .HasOne(t => t.Task)
-                .WithMany(e => e.TaskEmployees)
+                .WithMany(t => t.TaskEmployees)
                 .HasForeignKey(t => t.IdTask);
+
+            modelBuilder.Entity<InvoiceTaskEmpl>()
+                .HasOne(i => i.Invoice)
+                .WithMany(i => i.InvoiceTaskEmpls)
+                .HasForeignKey(i => i.IdInvoice);
+
+            modelBuilder.Entity<InvoiceTaskEmpl>()
+                .HasOne(i => i.TaskEmployee)
+                .WithOne(t => t.InvoiceTaskEmpl)
+                .HasForeignKey<InvoiceTaskEmpl>(i => i.IdTaskEmployee);
+
+            //modelBuilder.Entity<Contract>()
+            //    .HasOne(c => c.Customer)
+            //    .WithMany(c => c.Contracts)
+            //    .HasForeignKey(c => c.IdCustomer);
+            //modelBuilder.Entity<Customer>()
+            //    .HasOne(p => p.Person)
+            //    .WithOne(c => c.Customer)
+            //    .HasForeignKey<Customer>(c => c.IdPerson);
+            //modelBuilder.Entity<Employee>()
+            //    .HasOne(p => p.Person)
+            //    .WithOne(e => e.Employee)
+            //    .HasForeignKey<Employee>(e => e.IdPerson);
+            //modelBuilder.Entity<Invoice>()
+            //    .HasOne(c => c.Contract)
+            //    .WithMany(i => i.Invoices)
+            //    .HasForeignKey(c => c.IdContract);
+            //modelBuilder.Entity<InvoiceTaskEmpl>()
+            //    .HasOne(i => i.Invoice)
+            //    .WithMany(i => i.InvoiceTaskEmployees)
+            //    .HasForeignKey(i => i.IdInvoice);
+            //modelBuilder.Entity<Task>()
+            //    .HasOne(t => t.Contract)
+            //    .WithMany(c => c.Tasks)
+            //    .HasForeignKey(t => t.IdContract);
+            //modelBuilder.Entity<TaskEmployee>()
+            //    .HasOne(t => t.InvoiceTaskEmpl)
+            //    .WithMany(i => i.TaskEmployees)
+            //    .HasForeignKey(t => t.IdInvoiceTaskEmpl);
+            //modelBuilder.Entity<TaskEmployee>()
+            //    .HasOne(t => t.Task)
+            //    .WithMany(e => e.TaskEmployees)
+            //    .HasForeignKey(t => t.IdTask);
+            //modelBuilder.Entity<TaskEmployee>()
+            //    .HasOne(t => t.Employee)
+            //    .WithMany(e => e.TaskEmployees)
+            //    .HasForeignKey(t => t.IdEmployee);
+
+
         }
 
     }

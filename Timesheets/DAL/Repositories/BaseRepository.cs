@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Timesheets.DAL.Repositories
@@ -17,17 +18,17 @@ namespace Timesheets.DAL.Repositories
             this.context = context;
         }
 
-        public TEntity GetById(long id)
+        public async Task<TEntity> GetById(long id)
         {
-            return dbSet.Find(id);
+            return await dbSet.FindAsync(id);
         }
 
-        public bool Create(TEntity entity)
+        public async Task<bool> Create(TEntity entity)
         {
             try
             {
-                context.Add(entity);
-                context.SaveChanges();
+                await context.AddAsync(entity);
+                await context.SaveChangesAsync();
             }
             catch (Exception exception)
             {
@@ -37,13 +38,13 @@ namespace Timesheets.DAL.Repositories
             return true;
         }
 
-        public bool Delete(long id)
+        public async Task<bool> Delete(long id)
         {
             try
             {
-                TEntity entity = dbSet.Find(id);
+                TEntity entity = await dbSet.FindAsync(id);
                 dbSet.Remove(entity);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
             catch (Exception exception)
             {
@@ -52,18 +53,28 @@ namespace Timesheets.DAL.Repositories
             return true;
         }
 
-        public bool Update(TEntity entity)
+        public async Task<bool> Update(TEntity entity)
         {
             try
             {
                 dbSet.Update(entity);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
             catch (Exception exception)
             {
                 return false;
             }
             return true;
+        }
+
+        public async Task LoadMember<TProperty>(TEntity item, Expression<Func<TEntity, TProperty>> propertyExpression) where TProperty : class
+        {
+            await context.Entry(item).Reference(propertyExpression).LoadAsync();
+        }
+
+        public async Task LoadMemberCollection<TProperty>(TEntity item, Expression<Func<TEntity, IEnumerable<TProperty> >> propertyExpression) where TProperty : class
+        {
+            await context.Entry(item).Collection(propertyExpression).LoadAsync();
         }
     }
 }

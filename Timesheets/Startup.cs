@@ -30,7 +30,7 @@ namespace Timesheets
             services.AddSingleton<TimesheetsContext>();
             services.AddSingleton<IPersonsRepository, PersonsRepository>();
             services.AddSingleton<ICustomersRepository, CustomersRepository>();
-            services.AddSingleton<CustomerService>();
+            services.AddSingleton<CustomersService>();
         }
 
 
