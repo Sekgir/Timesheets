@@ -52,6 +52,13 @@ namespace Timesheets.DAL.Services
                 await _tasksRepository.LoadMemberCollection(task, item => item.TaskEmployees);
                 foreach (var taskEmployee in task.TaskEmployees)
                 {
+                    await _taskEmployeesRepository.LoadMember(taskEmployee, item => item.InvoiceTaskEmpl);
+
+                    if (taskEmployee.InvoiceTaskEmpl != null)
+                    {
+                        continue;
+                    }
+
                     if (invoice == null)
                     {
                         invoice = await NewInvoice(contract);
@@ -70,6 +77,12 @@ namespace Timesheets.DAL.Services
             }
             foreach (var task in contract.Tasks.Where(item => item.FixedAmount))
             {
+                await _tasksRepository.LoadMember(task, item => item.InvoiceTask);
+                if (task.InvoiceTask != null)
+                {
+                    continue;
+                }
+
                 if (invoice == null)
                 {
                     invoice = await NewInvoice(contract);
