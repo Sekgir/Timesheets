@@ -80,45 +80,6 @@ namespace Timesheets
                 .HasOne(i => i.TaskEmployee)
                 .WithOne(t => t.InvoiceTaskEmpl)
                 .HasForeignKey<InvoiceTaskEmpl>(i => i.IdTaskEmployee);
-
-            //modelBuilder.Entity<Contract>()
-            //    .HasOne(c => c.Customer)
-            //    .WithMany(c => c.Contracts)
-            //    .HasForeignKey(c => c.IdCustomer);
-            //modelBuilder.Entity<Customer>()
-            //    .HasOne(p => p.Person)
-            //    .WithOne(c => c.Customer)
-            //    .HasForeignKey<Customer>(c => c.IdPerson);
-            //modelBuilder.Entity<Employee>()
-            //    .HasOne(p => p.Person)
-            //    .WithOne(e => e.Employee)
-            //    .HasForeignKey<Employee>(e => e.IdPerson);
-            //modelBuilder.Entity<Invoice>()
-            //    .HasOne(c => c.Contract)
-            //    .WithMany(i => i.Invoices)
-            //    .HasForeignKey(c => c.IdContract);
-            //modelBuilder.Entity<InvoiceTaskEmpl>()
-            //    .HasOne(i => i.Invoice)
-            //    .WithMany(i => i.InvoiceTaskEmployees)
-            //    .HasForeignKey(i => i.IdInvoice);
-            //modelBuilder.Entity<Task>()
-            //    .HasOne(t => t.Contract)
-            //    .WithMany(c => c.Tasks)
-            //    .HasForeignKey(t => t.IdContract);
-            //modelBuilder.Entity<TaskEmployee>()
-            //    .HasOne(t => t.InvoiceTaskEmpl)
-            //    .WithMany(i => i.TaskEmployees)
-            //    .HasForeignKey(t => t.IdInvoiceTaskEmpl);
-            //modelBuilder.Entity<TaskEmployee>()
-            //    .HasOne(t => t.Task)
-            //    .WithMany(e => e.TaskEmployees)
-            //    .HasForeignKey(t => t.IdTask);
-            //modelBuilder.Entity<TaskEmployee>()
-            //    .HasOne(t => t.Employee)
-            //    .WithMany(e => e.TaskEmployees)
-            //    .HasForeignKey(t => t.IdEmployee);
-
-
         }
 
     }
