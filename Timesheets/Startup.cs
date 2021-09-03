@@ -27,10 +27,20 @@ namespace Timesheets
 
         public void AddSqlRepositories(IServiceCollection services)
         {
-            services.AddSingleton<TimesheetsContext>();
-            services.AddSingleton<IPersonsRepository, PersonsRepository>();
-            services.AddSingleton<ICustomersRepository, CustomersRepository>();
-            services.AddSingleton<CustomerService>();
+            services.AddScoped<TimesheetsContext>();
+            services.AddScoped<IContractsRepository, ContractsRepository>();
+            services.AddScoped<ICustomersRepository, CustomersRepository>();
+            services.AddScoped<IEmployeesRepository, EmployeesRepository>();
+            services.AddScoped<IInvoicesRepository, InvoicesRepository>();
+            services.AddScoped<IInvoiceTasksRepository, InvoiceTasksRepository>();
+            services.AddScoped<IInvoiceTaskEmplsRepository, InvoiceTaskEmplsRepository>();
+            services.AddScoped<IPersonsRepository, PersonsRepository>();
+            services.AddScoped<ITaskEmployeesRepository, TaskEmployeesRepository>();
+            services.AddScoped<ITasksRepository, TasksRepository>();
+            services.AddScoped<CustomersService>();
+            services.AddScoped<ContractsService>();
+            services.AddScoped<EmployeesService>();
+            services.AddScoped<TasksService>();
         }
 
 
@@ -41,7 +51,7 @@ namespace Timesheets
         {
             services.AddControllers();
             ConfigureSwagger(services);
-            services.AddSingleton<Data>();
+            //services.AddSingleton<Data>();
             AddSqlRepositories(services);
         }
 

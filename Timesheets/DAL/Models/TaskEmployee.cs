@@ -10,5 +10,6 @@ namespace Timesheets.DAL.Models
 
         public Task Task { get; set; }
         public Employee Employee { get; set; }
+        public InvoiceTaskEmpl InvoiceTaskEmpl { get; set; }
     }
 }

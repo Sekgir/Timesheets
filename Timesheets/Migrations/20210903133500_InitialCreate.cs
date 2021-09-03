@@ -179,6 +179,32 @@ namespace Timesheets.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "InvoiceTaskEmpl",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    IdInvoice = table.Column<long>(type: "bigint", nullable: false),
+                    IdTaskEmployee = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InvoiceTaskEmpl", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_InvoiceTaskEmpl_Invoices_IdInvoice",
+                        column: x => x.IdInvoice,
+                        principalTable: "Invoices",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_InvoiceTaskEmpl_TaskEmployee_IdTaskEmployee",
+                        column: x => x.IdTaskEmployee,
+                        principalTable: "TaskEmployee",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Contracts_IdCustomer",
                 table: "Contracts",
@@ -209,7 +235,19 @@ namespace Timesheets.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_InvoiceTask_IdTask",
                 table: "InvoiceTask",
-                column: "IdTask");
+                column: "IdTask",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoiceTaskEmpl_IdInvoice",
+                table: "InvoiceTaskEmpl",
+                column: "IdInvoice");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvoiceTaskEmpl_IdTaskEmployee",
+                table: "InvoiceTaskEmpl",
+                column: "IdTaskEmployee",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskEmployee_IdEmployee",
@@ -233,10 +271,13 @@ namespace Timesheets.Migrations
                 name: "InvoiceTask");
 
             migrationBuilder.DropTable(
-                name: "TaskEmployee");
+                name: "InvoiceTaskEmpl");
 
             migrationBuilder.DropTable(
                 name: "Invoices");
+
+            migrationBuilder.DropTable(
+                name: "TaskEmployee");
 
             migrationBuilder.DropTable(
                 name: "Employees");

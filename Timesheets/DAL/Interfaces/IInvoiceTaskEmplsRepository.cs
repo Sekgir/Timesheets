@@ -6,8 +6,8 @@ using Timesheets.DAL.Models;
 
 namespace Timesheets.DAL.Interfaces
 {
-    public interface IInvoiceTasksRepository : IRepository<InvoiceTask>
+    public interface IInvoiceTaskEmplsRepository : IRepository<InvoiceTaskEmpl>
     {
-
+        
     }
 }

@@ -11,7 +11,7 @@ namespace Timesheets.DAL.Models
         public bool FixedAmount { get; set; }
 
         public Contract Contract { get; set; }
-        public ICollection<InvoiceTask> InvoiceTasks { get; set; }
         public ICollection<TaskEmployee> TaskEmployees { get; set; }
+        public InvoiceTask InvoiceTask { get; set; }
     }
 }
