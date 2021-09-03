@@ -42,7 +42,7 @@ namespace Timesheets.DAL.Services
             return contract.Invoices;
         }
 
-        public async System.Threading.Tasks.Task<Invoice> CreateInvoice(int idContract)
+        public async Task<Invoice> CreateInvoice(int idContract)
         {
             Invoice invoice = null;
             var contract = await _contractsRepository.GetById(idContract);
