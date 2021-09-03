@@ -42,7 +42,7 @@ namespace Timesheets.DAL.Services
             return contract.Invoices;
         }
 
-        public async System.Threading.Tasks.Task CreateInvoice(int idContract)
+        public async System.Threading.Tasks.Task<Invoice> CreateInvoice(int idContract)
         {
             Invoice invoice = null;
             var contract = await _contractsRepository.GetById(idContract);
@@ -54,7 +54,7 @@ namespace Timesheets.DAL.Services
                 {
                     if (invoice == null)
                     {
-                        invoice = await NewInvoice();
+                        invoice = await NewInvoice(contract);
                     }
 
                     await _taskEmployeesRepository.LoadMember(taskEmployee, item => item.Employee);
@@ -65,13 +65,14 @@ namespace Timesheets.DAL.Services
                         TaskEmployee = taskEmployee
                     };
                     await _invoiceTaskEmplsRepository.Create(invoiceTaskEmpl);
+                    await _invoicesRepository.Update(invoice);
                 }
             }
             foreach (var task in contract.Tasks.Where(item => item.FixedAmount))
             {
                 if (invoice == null)
                 {
-                    invoice = await NewInvoice();
+                    invoice = await NewInvoice(contract);
                 }
 
                 invoice.Amount += task.Amount;
@@ -81,13 +82,14 @@ namespace Timesheets.DAL.Services
                     Invoice = invoice
                 };
                 await _invoiceTasksRepository.Create(invoiceTask);
+                await _invoicesRepository.Update(invoice);
             }
-            await _invoicesRepository.Update(invoice);
+            return invoice;
         }
 
-        private async Task<Invoice> NewInvoice()
+        private async Task<Invoice> NewInvoice(Contract contract)
         {
-            Invoice invoice = new Invoice();
+            Invoice invoice = new Invoice() { Contract = contract };
             await _invoicesRepository.Create(invoice);
             return invoice;
         }

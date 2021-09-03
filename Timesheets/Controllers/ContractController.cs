@@ -38,8 +38,8 @@ namespace Timesheets.Controllers
         [HttpPost("{id}/invoice")]
         public async Task<ActionResult> CreateInvoice([FromRoute] int id)
         {
-            await _service.CreateInvoice(id);
-            return Ok();
+            var result = await _service.CreateInvoice(id);
+            return Ok(result);
         }
     }
 }
