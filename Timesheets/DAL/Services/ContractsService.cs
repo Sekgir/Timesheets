@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Timesheets.DAL.Interfaces;
+using Timesheets.DAL.Repositories;
 using Timesheets.DAL.Models;
 
 namespace Timesheets.DAL.Services
 {
-    public class ContractsService
+    public class ContractsService : IDisposable
     {
+        TimesheetsContext _context;
         IContractsRepository _contractsRepository;
         ITasksRepository _tasksRepository;
         ITaskEmployeesRepository _taskEmployeesRepository;
@@ -16,11 +18,11 @@ namespace Timesheets.DAL.Services
         IInvoiceTasksRepository _invoiceTasksRepository;
         IInvoiceTaskEmplsRepository _invoiceTaskEmplsRepository;
 
-
-        public ContractsService(IContractsRepository contractsRepository, ITasksRepository tasksRepository,
-            ITaskEmployeesRepository taskEmployeesRepository, IInvoicesRepository invoicesRepository,
+        public ContractsService(TimesheetsContext context, IContractsRepository contractsRepository,
+            ITasksRepository tasksRepository, ITaskEmployeesRepository taskEmployeesRepository, IInvoicesRepository invoicesRepository,
             IInvoiceTasksRepository invoiceTasksRepository, IInvoiceTaskEmplsRepository invoiceTaskEmplsRepository)
         {
+            _context = context;
             _contractsRepository = contractsRepository;
             _tasksRepository = tasksRepository;
             _taskEmployeesRepository = taskEmployeesRepository;
@@ -29,9 +31,9 @@ namespace Timesheets.DAL.Services
             _invoiceTaskEmplsRepository = invoiceTaskEmplsRepository;
         }
 
-        public async Task<Contract> GetContractById(int iidContract)
+        public async Task<Contract> GetContractById(int idContract)
         {
-            var contract = await _contractsRepository.GetById(iidContract);
+            var contract = await _contractsRepository.GetById(idContract);
             return contract;
         }
 
@@ -97,6 +99,7 @@ namespace Timesheets.DAL.Services
                 await _invoiceTasksRepository.Create(invoiceTask);
                 await _invoicesRepository.Update(invoice);
             }
+            await Save();
             return invoice;
         }
 
@@ -105,6 +108,31 @@ namespace Timesheets.DAL.Services
             Invoice invoice = new Invoice() { Contract = contract };
             await _invoicesRepository.Create(invoice);
             return invoice;
+        }
+
+        public async System.Threading.Tasks.Task Save()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

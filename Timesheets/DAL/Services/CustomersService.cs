@@ -7,24 +7,26 @@ using Timesheets.DAL.Interfaces;
 
 namespace Timesheets.DAL.Services
 {
-    public class CustomersService
+    public class CustomersService : IDisposable
     {
+        TimesheetsContext _context;
         ICustomersRepository _customersRepository;
         IContractsRepository _contractsRepository;
-        IInvoicesRepository _invoicesRepository;
         IPersonsRepository _personsRepository;
 
-        public CustomersService(ICustomersRepository customersRepository, IContractsRepository contractsRepository, IInvoicesRepository invoicesRepository, IPersonsRepository personsRepository)
+        public CustomersService(TimesheetsContext context, ICustomersRepository customersRepository, IContractsRepository contractsRepository, IPersonsRepository personsRepository)
         {
+            _context = context;
             _customersRepository = customersRepository;
             _contractsRepository = contractsRepository;
-            _invoicesRepository = invoicesRepository;
             _personsRepository = personsRepository;
         }
 
         public async Task<Customer> GetCustomerById(long id)
         {
-            return await _customersRepository.GetById(id);
+            var result = await _customersRepository.GetById(id);
+            await _customersRepository.LoadMember(result, item => item.Person);
+            return result;
         }
 
         public async Task<ICollection<Contract>> GetContractsByCustomerId(long id)
@@ -38,6 +40,7 @@ namespace Timesheets.DAL.Services
             Customer customer = await _customersRepository.GetById(id);
             Contract contract = new Contract() { Number = number, Customer = customer};
             await _contractsRepository.Create(contract);
+            await Save();
         }
         public async Task<ICollection<Invoice>> GetInvoicesByCustomerId(long id)
         {
@@ -56,6 +59,32 @@ namespace Timesheets.DAL.Services
             await _personsRepository.Create(person);
             Customer customer = new Customer()  { Person = person };
             await _customersRepository.Create(customer);
+            await Save();
+        }
+
+        public async System.Threading.Tasks.Task Save()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    _context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

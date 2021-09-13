@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Timesheets.DAL.Interfaces;
 
 namespace Timesheets.DAL.Repositories
 {
-    public abstract class BaseRepository<TEntity> where TEntity : class
+    public abstract class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         protected DbSet<TEntity> dbSet { get; set; }
         protected TimesheetsContext context { get; set; }
@@ -28,7 +29,6 @@ namespace Timesheets.DAL.Repositories
             try
             {
                 await context.AddAsync(entity);
-                await context.SaveChangesAsync();
             }
             catch (Exception exception)
             {
@@ -44,7 +44,6 @@ namespace Timesheets.DAL.Repositories
             {
                 TEntity entity = await dbSet.FindAsync(id);
                 dbSet.Remove(entity);
-                await context.SaveChangesAsync();
             }
             catch (Exception exception)
             {
@@ -58,7 +57,6 @@ namespace Timesheets.DAL.Repositories
             try
             {
                 dbSet.Update(entity);
-                await context.SaveChangesAsync();
             }
             catch (Exception exception)
             {
